@@ -54,6 +54,9 @@ status_t AudioPolicyManagerBase::setEffectEnabled(EffectDescriptor *pDesc, bool 
 
 status_t AudioPolicyManagerBase::setEffectEnabled(int id, bool enabled)
 {
+    return NO_ERROR;
+
+#if 0
     ssize_t index = mEffects.indexOfKey(id);
     if (index < 0) {
         LOGW("setEffectEnabled() unknown effect ID %d", id);
@@ -61,6 +64,7 @@ status_t AudioPolicyManagerBase::setEffectEnabled(int id, bool enabled)
     }
 
     return setEffectEnabled(mEffects.valueAt(index), enabled);
+#endif
 }
 
 
