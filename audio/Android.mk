@@ -15,6 +15,12 @@
 
 ifneq ($(TARGET_PROVIDES_LIBAUDIO),true)
 ifeq ($(BOARD_USES_AUDIO_LEGACY),true)
+
+$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libaudio_intermediates/)
+$(shell touch $(OUT)/obj/SHARED_LIBRARIES/libaudio_intermediates/export_includes)
+$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libaudiopolicy_intermediates/)
+$(shell touch $(OUT)/obj/SHARED_LIBRARIES/libaudiopolicy_intermediates/export_includes)
+
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -86,7 +92,6 @@ ifeq ($(BOARD_USES_AUDIO_LEGACY),true)
 LOCAL_SHARED_LIBRARIES += libaudiopolicy
 endif
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)
 LOCAL_MODULE := audio_policy.$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 LOCAL_MODULE_TAGS := optional

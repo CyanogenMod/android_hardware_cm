@@ -26,27 +26,27 @@ namespace android {
 status_t AudioPolicyManagerBase::setEffectEnabled(EffectDescriptor *pDesc, bool enabled)
 {
     if (enabled == pDesc->mEnabled) {
-        LOGV("setEffectEnabled(%s) effect already %s",
+        ALOGV("setEffectEnabled(%s) effect already %s",
              enabled?"true":"false", enabled?"enabled":"disabled");
         return INVALID_OPERATION;
     }
 
     if (enabled) {
         if (mTotalEffectsCpuLoad + pDesc->mDesc.cpuLoad > getMaxEffectsCpuLoad()) {
-            LOGW("setEffectEnabled(true) CPU Load limit exceeded for Fx %s, CPU %f MIPS",
+            ALOGW("setEffectEnabled(true) CPU Load limit exceeded for Fx %s, CPU %f MIPS",
                  pDesc->mDesc.name, (float)pDesc->mDesc.cpuLoad/10);
             return INVALID_OPERATION;
         }
         mTotalEffectsCpuLoad += pDesc->mDesc.cpuLoad;
-        LOGV("setEffectEnabled(true) total CPU %d", mTotalEffectsCpuLoad);
+        ALOGV("setEffectEnabled(true) total CPU %d", mTotalEffectsCpuLoad);
     } else {
         if (mTotalEffectsCpuLoad < pDesc->mDesc.cpuLoad) {
-            LOGW("setEffectEnabled(false) CPU load %d too high for total %d",
+            ALOGW("setEffectEnabled(false) CPU load %d too high for total %d",
                     pDesc->mDesc.cpuLoad, mTotalEffectsCpuLoad);
             pDesc->mDesc.cpuLoad = mTotalEffectsCpuLoad;
         }
         mTotalEffectsCpuLoad -= pDesc->mDesc.cpuLoad;
-        LOGV("setEffectEnabled(false) total CPU %d", mTotalEffectsCpuLoad);
+        ALOGV("setEffectEnabled(false) total CPU %d", mTotalEffectsCpuLoad);
     }
     pDesc->mEnabled = enabled;
     return NO_ERROR;
@@ -59,7 +59,7 @@ status_t AudioPolicyManagerBase::setEffectEnabled(int id, bool enabled)
 #if 0
     ssize_t index = mEffects.indexOfKey(id);
     if (index < 0) {
-        LOGW("setEffectEnabled() unknown effect ID %d", id);
+        ALOGW("setEffectEnabled() unknown effect ID %d", id);
         return INVALID_OPERATION;
     }
 

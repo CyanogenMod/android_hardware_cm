@@ -20,7 +20,7 @@
 #include <utils/Timers.h>
 #include <utils/Errors.h>
 #include <utils/KeyedVector.h>
-#include "AudioPolicyInterfaceLegacy.h"
+#include <AudioPolicyInterfaceLegacy.h>
 #include <AudioSystem.h>
 
 
