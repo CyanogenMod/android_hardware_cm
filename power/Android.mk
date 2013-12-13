@@ -13,6 +13,8 @@
 # limitations under the License.
 
 ifeq ($(TARGET_USES_CM_POWERHAL),true)
+ifneq ($(WITH_QC_PERF),true)
+
 LOCAL_PATH := $(call my-dir)
 
 # HAL module implemenation stored in
@@ -32,4 +34,5 @@ endif
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
+endif # !WITH_QC_PERF
 endif # TARGET_USES_CM_POWERHAL
