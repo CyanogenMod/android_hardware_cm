@@ -106,9 +106,20 @@ static int get_scaling_governor() {
     return 0;
 }
 
+#ifdef SET_INTERACTIVE_EXT
+extern void cm_power_set_interactive_ext(int on);
+#endif
+
 static void cm_power_set_interactive(struct power_module *module, int on)
 {
+    struct cm_power_module *cm = (struct cm_power_module *) module;
+
+    pthread_mutex_lock(&cm->lock);
     sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
+#ifdef SET_INTERACTIVE_EXT
+    cm_power_set_interactive_ext(on);
+#endif
+    pthread_mutex_unlock(&cm->lock);
 }
 
 
