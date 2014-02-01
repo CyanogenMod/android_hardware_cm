@@ -108,8 +108,7 @@ static int get_scaling_governor() {
 
 static void cm_power_set_interactive(struct power_module *module, int on)
 {
-    if (strncmp(governor, "ondemand", 8) == 0)
-        sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
+    sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
 }
 
 
