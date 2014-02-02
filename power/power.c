@@ -112,14 +112,15 @@ extern void cm_power_set_interactive_ext(int on);
 
 static void cm_power_set_interactive(struct power_module *module, int on)
 {
+#ifdef SET_INTERACTIVE_EXT
     struct cm_power_module *cm = (struct cm_power_module *) module;
-
     pthread_mutex_lock(&cm->lock);
+#endif
     sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
 #ifdef SET_INTERACTIVE_EXT
     cm_power_set_interactive_ext(on);
-#endif
     pthread_mutex_unlock(&cm->lock);
+#endif
 }
 
 
