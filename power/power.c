@@ -112,8 +112,7 @@ extern void cm_power_set_interactive_ext(int on);
 
 static void cm_power_set_interactive(struct power_module *module, int on)
 {
-    struct cm_power_module *cm = (struct cm_power_module *) module;
-
+    struct cm_power_module *cm = (struct cm_power_module*)module;
     pthread_mutex_lock(&cm->lock);
     sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
 #ifdef SET_INTERACTIVE_EXT
@@ -123,9 +122,12 @@ static void cm_power_set_interactive(struct power_module *module, int on)
 }
 
 
-static void configure_governor()
+static void configure_governor(struct power_module *module)
 {
-    cm_power_set_interactive(NULL, 1);
+
+    struct cm_power_module *cm = (struct cm_power_module *)module;
+
+    cm_power_set_interactive(module, 1);
 
     if (strncmp(governor, "ondemand", 8) == 0) {
         sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/up_threshold", "90");
@@ -149,9 +151,10 @@ static void configure_governor()
     }
 }
 
-static int boostpulse_open(struct cm_power_module *cm)
+static int boostpulse_open(struct power_module *module)
 {
     char buf[80];
+    struct cm_power_module *cm = (struct cm_power_module*)module;
 
     pthread_mutex_lock(&cm->lock);
 
@@ -170,7 +173,7 @@ static int boostpulse_open(struct cm_power_module *cm)
                 ALOGV("Error opening boostpulse: %s\n", buf);
                 cm->boostpulse_warned = 1;
             } else if (cm->boostpulse_fd > 0) {
-                configure_governor();
+                configure_governor(module);
                 ALOGD("Opened %s boostpulse interface", governor);
             }
         }
@@ -193,7 +196,7 @@ static void cm_power_hint(struct power_module *module, power_hint_t hint,
     case POWER_HINT_INTERACTION:
 #endif
     case POWER_HINT_CPU_BOOST:
-        if (boostpulse_open(cm) >= 0) {
+        if (boostpulse_open(module) >= 0) {
             if (data != NULL)
                 duration = (int) data;
 
@@ -224,7 +227,7 @@ static void cm_power_hint(struct power_module *module, power_hint_t hint,
 static void cm_power_init(struct power_module *module)
 {
     get_scaling_governor();
-    configure_governor();
+    configure_governor(module);
 }
 
 static struct hw_module_methods_t power_module_methods = {
