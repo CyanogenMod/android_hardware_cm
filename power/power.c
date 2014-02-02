@@ -112,6 +112,7 @@ extern void cm_power_set_interactive_ext(int on);
 
 static void cm_power_set_interactive(struct power_module *module, int on)
 {
+
     struct cm_power_module *cm = (struct cm_power_module *) module;
 
     pthread_mutex_lock(&cm->lock);
@@ -123,9 +124,10 @@ static void cm_power_set_interactive(struct power_module *module, int on)
 }
 
 
+
 static void configure_governor()
 {
-    cm_power_set_interactive(NULL, 1);
+    sysfs_write(NOTIFY_ON_MIGRATE, "1");
 
     if (strncmp(governor, "ondemand", 8) == 0) {
         sysfs_write("/sys/devices/system/cpu/cpufreq/ondemand/up_threshold", "90");
