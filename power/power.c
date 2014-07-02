@@ -166,9 +166,10 @@ static int boostpulse_open(struct cm_power_module *cm)
                 ALOGV("Error opening boostpulse: %s\n", buf);
                 cm->boostpulse_warned = 1;
             } else if (cm->boostpulse_fd > 0) {
-                configure_governor();
                 ALOGD("Opened %s boostpulse interface", governor);
             }
+
+        configure_governor();
         }
     }
 
