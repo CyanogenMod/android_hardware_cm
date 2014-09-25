@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ifneq ($(WITH_QC_PERF),true)
+ifneq ($(TARGET_HAVE_QC_PERF),true)
 ifeq ($(TARGET_POWERHAL_VARIANT),cm)
 
 LOCAL_PATH := $(call my-dir)
@@ -44,4 +44,4 @@ LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
 endif # TARGET_POWERHAL_VARIANT == cm
-endif # !WITH_QC_PERF
+endif # !TARGET_HAVE_QC_PERF
